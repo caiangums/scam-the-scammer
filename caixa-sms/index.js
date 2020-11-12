@@ -5,8 +5,9 @@ const LOOP_COUNT = 100;
 const LOOP_SPACING = 1000;
 
 (async () => {
+    const browser = await puppeteer.launch({ headless: true });
+
     for (let index = 0; index < LOOP_COUNT; index++) {
-        const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         await page.emulate(iPhone);
         await page.goto('https://smsmobile.atualizacliente.com/', { waitUntil: 'networkidle0' });
@@ -19,6 +20,8 @@ const LOOP_SPACING = 1000;
             console.log(result.status == '422' ? 'SUCCESS' : 'ERROR');
         })
         await page.waitForTimeout(LOOP_SPACING)
-        await browser.close();
+        await page.close();
     }
+
+    await browser.close();
 })();    
